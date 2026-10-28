@@ -81,6 +81,7 @@ the use of this software, even if advised of the possibility of such damage.
  */
 
 #ifndef _KCFTRACKER_HEADERS
+#include <opencv2/core/core_c.h>    // Edited
 #include "kcftracker.hpp"
 #include "ffttools.hpp"
 #include "recttools.hpp"
@@ -227,12 +228,14 @@ cv::Rect KCFTracker::update(cv::Mat image)
 
 
 // Detect object in the current frame.
+// Z is the template 
+// X is the feature
 cv::Point2f KCFTracker::detect(cv::Mat z, cv::Mat x, float &peak_value)
 {
     using namespace FFTTools;
 
-    cv::Mat k = gaussianCorrelation(x, z);
-    cv::Mat res = (real(fftd(complexMultiplication(_alphaf, fftd(k)), true)));
+    cv::Mat k = gaussianCorrelation(x, z);   // Kxz
+    cv::Mat res = (real(fftd(complexMultiplication(_alphaf, fftd(k)), true)));  // eq.22
 
     //minMaxLoc only accepts doubles for the peak, and integer points for the coordinates
     cv::Point2i pi;
@@ -318,6 +321,7 @@ cv::Mat KCFTracker::gaussianCorrelation(cv::Mat x1, cv::Mat x2)
 }
 
 // Create Gaussian Peak. Function called only in the first frame.
+// First frame for object detection (Frequency response from the image) 
 cv::Mat KCFTracker::createGaussianPeak(int sizey, int sizex)
 {
     cv::Mat_<float> res(sizey, sizex);
@@ -403,7 +407,8 @@ cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scal
 
     // HOG features
     if (_hogfeatures) {
-        IplImage z_ipl = z;
+        // IplImage z_ipl = z;
+        IplImage z_ipl = cvIplImage(z);
         CvLSVMFeatureMapCaskade *map;
         getFeatureMaps(&z_ipl, cell_size, &map);
         normalizeAndTruncate(map,0.2f);
