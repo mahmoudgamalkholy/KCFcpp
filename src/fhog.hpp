@@ -56,8 +56,8 @@
 //#include "_lsvmc_routine.h"
 
 //#include "opencv2/imgproc.hpp"
-#include "opencv2/imgproc/imgproc_c.h"
-
+// #include "opencv2/imgproc/imgproc_c.h"
+#include "gem5_vision.hpp"
 
 //modified from "_lsvmc_types.h"
 
@@ -79,8 +79,7 @@ typedef struct{
 
 #include "float.h"
 
-#define PI    CV_PI
-
+#define PI    3.14159265358979323846f
 #define EPS 0.000001
 
 #define F_MAX FLT_MAX
@@ -132,7 +131,8 @@ typedef struct{
 // RESULT
 // Error status
 */
-int getFeatureMaps(const IplImage * image, const int k, CvLSVMFeatureMapCaskade **map);
+
+int getFeatureMaps(const g5v::Matrix& image, const int k, CvLSVMFeatureMapCaskade **map);
 
 
 /*

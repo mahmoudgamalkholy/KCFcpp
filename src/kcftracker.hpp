@@ -96,10 +96,10 @@ public:
     KCFTracker(bool hog = true, bool fixed_window = true, bool multiscale = true, bool lab = true);
 
     // Initialize tracker 
-    void init(const g5v::Rect &roi, cv::Mat image);
+    void init(const g5v::Rect &roi, g5v::Matrix image);
     
     // Update position based on the new frame
-    g5v::Rect update(cv::Mat image);
+    g5v::Rect update(g5v::Matrix image);
 
     float interp_factor; // linear interpolation factor for adaptation
     float sigma; // gaussian kernel bandwidth
@@ -114,19 +114,19 @@ public:
 
 protected:
     // Detect object in the current frame.
-    g5v::Point detect(cv::Mat z, cv::Mat x, float &peak_value);
+    g5v::Point detect(g5v::Matrix z, g5v::Matrix x, float &peak_value);
 
     // train tracker with a single image
-    void train(cv::Mat x, float train_interp_factor);
+    void train(g5v::Matrix x, float train_interp_factor);
 
     // Evaluates a Gaussian kernel with bandwidth SIGMA for all relative shifts between input images X and Y, which must both be MxN. They must    also be periodic (ie., pre-processed with a cosine window).
-    cv::Mat gaussianCorrelation(cv::Mat x1, cv::Mat x2);
+    g5v::Matrix gaussianCorrelation(g5v::Matrix x1, g5v::Matrix x2);
 
     // Create Gaussian Peak. Function called only in the first frame.
-    cv::Mat createGaussianPeak(int sizey, int sizex);
+    g5v::Matrix createGaussianPeak(int sizey, int sizex);
 
     // Obtain sub-window from image, with replication-padding and extract features
-    cv::Mat getFeatures(const cv::Mat & image, bool inithann, float scale_adjust = 1.0f);
+    g5v::Matrix getFeatures(const g5v::Matrix & image, bool inithann, float scale_adjust = 1.0f);
 
     // Initialize Hanning window. Function called only in the first frame.
     void createHanningMats();
@@ -134,17 +134,17 @@ protected:
     // Calculate sub-pixel peak for one dimension
     float subPixelPeak(float left, float center, float right);
 
-    cv::Mat _alphaf;
-    cv::Mat _prob;
-    cv::Mat _tmpl;
-    cv::Mat _num;
-    cv::Mat _den;
-    cv::Mat _labCentroids;
+    g5v::Matrix _alphaf;
+    g5v::Matrix _prob;
+    g5v::Matrix _tmpl;
+    g5v::Matrix _num;
+    g5v::Matrix _den;
+    g5v::Matrix _labCentroids;
 
 private:
     int size_patch[3];
-    cv::Mat hann;
-    cv::Size _tmpl_sz;
+    g5v::Matrix hann;
+    g5v::Size _tmpl_sz;
     float _scale;
     int _gaussian_size;
     bool _hogfeatures;

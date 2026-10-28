@@ -1,17 +1,22 @@
-cmake_minimum_required(VERSION 3.5)
-project(test)
+cmake_minimum_required(VERSION 3.10)
 
-find_package(OpenCV REQUIRED)
+# ==============================================================
+set(CMAKE_SYSTEM_NAME Linux) 
+set(CMAKE_SYSTEM_PROCESSOR riscv64)
 
-if(NOT WIN32)
-ADD_DEFINITIONS("-std=c++0x -O3")
-endif(NOT WIN32)
+set(CMAKE_C_COMPILER "riscv64-linux-gnu-gcc")
+set(CMAKE_CXX_COMPILER "riscv64-linux-gnu-g++")
+# ==============================================================
+
+project(KCF_Tracker CXX)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -march=rv64g -mabi=lp64d -Wall -static")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 
 include_directories(src) 
 FILE(GLOB_RECURSE sourcefiles "src/*.cpp")
-add_executable( KCF ${sourcefiles} )
-target_link_libraries( KCF ${OpenCV_LIBS})
 
+add_executable(KCF.elf ${sourcefiles})
 
-
-
+#   Run QEMU Simulator 
+#   qemu-riscv64 ./KCF.elf
