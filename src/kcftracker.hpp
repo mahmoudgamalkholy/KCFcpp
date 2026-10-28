@@ -36,13 +36,13 @@ For speed, the value (template_size/cell_size) should be a power of 2 or a produ
 
 Inputs to init():
    image is the initial frame.
-   roi is a cv::Rect with the target positions in the initial frame
+   roi is a g5v::Rect with the target positions in the initial frame
 
 Inputs to update():
    image is the current frame.
 
 Outputs of update():
-   cv::Rect with target positions for the current frame
+   g5v::Rect with target positions for the current frame
 
 
 By downloading, copying, installing or using the software you agree to this license.
@@ -83,6 +83,7 @@ the use of this software, even if advised of the possibility of such damage.
 #pragma once
 
 #include "tracker.h"
+#include "gem5_vision.hpp"
 
 #ifndef _OPENCV_KCFTRACKER_HPP_
 #define _OPENCV_KCFTRACKER_HPP_
@@ -95,10 +96,10 @@ public:
     KCFTracker(bool hog = true, bool fixed_window = true, bool multiscale = true, bool lab = true);
 
     // Initialize tracker 
-    virtual void init(const cv::Rect &roi, cv::Mat image);
+    void init(const g5v::Rect &roi, cv::Mat image);
     
     // Update position based on the new frame
-    virtual cv::Rect update(cv::Mat image);
+    g5v::Rect update(cv::Mat image);
 
     float interp_factor; // linear interpolation factor for adaptation
     float sigma; // gaussian kernel bandwidth
@@ -113,7 +114,7 @@ public:
 
 protected:
     // Detect object in the current frame.
-    cv::Point2f detect(cv::Mat z, cv::Mat x, float &peak_value);
+    g5v::Point detect(cv::Mat z, cv::Mat x, float &peak_value);
 
     // train tracker with a single image
     void train(cv::Mat x, float train_interp_factor);

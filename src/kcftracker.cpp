@@ -36,13 +36,13 @@ For speed, the value (template_size/cell_size) should be a power of 2 or a produ
 
 Inputs to init():
    image is the initial frame.
-   roi is a cv::Rect with the target positions in the initial frame
+   roi is a g5v::Rect with the target positions in the initial frame
 
 Inputs to update():
    image is the current frame.
 
 Outputs of update():
-   cv::Rect with target positions for the current frame
+   g5v::Rect with target positions for the current frame
 
 
 By downloading, copying, installing or using the software you agree to this license.
@@ -159,7 +159,7 @@ KCFTracker::KCFTracker(bool hog, bool fixed_window, bool multiscale, bool lab)
 }
 
 // Initialize tracker 
-void KCFTracker::init(const cv::Rect &roi, cv::Mat image)
+void KCFTracker::init(const g5v::Rect &roi, cv::Mat image)
 {
     _roi = roi;
     assert(roi.width >= 0 && roi.height >= 0);
@@ -171,7 +171,7 @@ void KCFTracker::init(const cv::Rect &roi, cv::Mat image)
     train(_tmpl, 1.0); // train with initial frame
  }
 // Update position based on the new frame
-cv::Rect KCFTracker::update(cv::Mat image)
+g5v::Rect KCFTracker::update(cv::Mat image)
 {
     if (_roi.x + _roi.width <= 0) _roi.x = -_roi.width + 1;
     if (_roi.y + _roi.height <= 0) _roi.y = -_roi.height + 1;
@@ -183,12 +183,12 @@ cv::Rect KCFTracker::update(cv::Mat image)
 
 
     float peak_value;
-    cv::Point2f res = detect(_tmpl, getFeatures(image, 0, 1.0f), peak_value);
+    g5v::Point res = detect(_tmpl, getFeatures(image, 0, 1.0f), peak_value);
 
     if (scale_step != 1) {
         // Test at a smaller _scale
         float new_peak_value;
-        cv::Point2f new_res = detect(_tmpl, getFeatures(image, 0, 1.0f / scale_step), new_peak_value);
+        g5v::Point new_res = detect(_tmpl, getFeatures(image, 0, 1.0f / scale_step), new_peak_value);
 
         if (scale_weight * new_peak_value > peak_value) {
             res = new_res;
@@ -230,7 +230,7 @@ cv::Rect KCFTracker::update(cv::Mat image)
 // Detect object in the current frame.
 // Z is the template 
 // X is the feature
-cv::Point2f KCFTracker::detect(cv::Mat z, cv::Mat x, float &peak_value)
+g5v::Point KCFTracker::detect(cv::Mat z, cv::Mat x, float &peak_value)
 {
     using namespace FFTTools;
 
@@ -238,13 +238,13 @@ cv::Point2f KCFTracker::detect(cv::Mat z, cv::Mat x, float &peak_value)
     cv::Mat res = (real(fftd(complexMultiplication(_alphaf, fftd(k)), true)));  // eq.22
 
     //minMaxLoc only accepts doubles for the peak, and integer points for the coordinates
-    cv::Point2i pi;
+    g5v::Point2i pi;
     double pv;
     cv::minMaxLoc(res, NULL, &pv, NULL, &pi);
     peak_value = (float) pv;
 
     //subpixel peak estimation, coordinates will be non-integer
-    cv::Point2f p((float)pi.x, (float)pi.y);
+    g5v::Point p((float)pi.x, (float)pi.y);
 
     if (pi.x > 0 && pi.x < res.cols-1) {
         p.x += subPixelPeak(res.at<float>(pi.y, pi.x-1), peak_value, res.at<float>(pi.y, pi.x+1));
@@ -345,7 +345,7 @@ cv::Mat KCFTracker::createGaussianPeak(int sizey, int sizex)
 // Obtain sub-window from image, with replication-padding and extract features
 cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scale_adjust)
 {
-    cv::Rect extracted_roi;
+    g5v::Rect extracted_roi;
 
     float cx = _roi.x + _roi.width / 2;
     float cy = _roi.y + _roi.height / 2;

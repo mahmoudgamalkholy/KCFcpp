@@ -186,14 +186,14 @@ cv::Mat complexDivision(cv::Mat a, cv::Mat b)
 
 void rearrange(cv::Mat &img)
 {
-    // img = img(cv::Rect(0, 0, img.cols & -2, img.rows & -2));
+    // img = img(g5v::Rect(0, 0, img.cols & -2, img.rows & -2));
     int cx = img.cols / 2;
     int cy = img.rows / 2;
 
-    cv::Mat q0(img, cv::Rect(0, 0, cx, cy)); // Top-Left - Create a ROI per quadrant
-    cv::Mat q1(img, cv::Rect(cx, 0, cx, cy)); // Top-Right
-    cv::Mat q2(img, cv::Rect(0, cy, cx, cy)); // Bottom-Left
-    cv::Mat q3(img, cv::Rect(cx, cy, cx, cy)); // Bottom-Right
+    cv::Mat q0(img, g5v::Rect(0, 0, cx, cy)); // Top-Left - Create a ROI per quadrant
+    cv::Mat q1(img, g5v::Rect(cx, 0, cx, cy)); // Top-Right
+    cv::Mat q2(img, g5v::Rect(0, cy, cx, cy)); // Bottom-Left
+    cv::Mat q3(img, g5v::Rect(cx, cy, cx, cy)); // Bottom-Right
 
     cv::Mat tmp; // swap quadrants (Top-Left with Bottom-Right)
     q0.copyTo(tmp);
