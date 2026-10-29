@@ -55,7 +55,7 @@ namespace RectTools
         res.height = y2(original) - y2(limited);
         return res;
     }
-
+    // instead of copyMakeBorder
     inline g5v::Matrix subwindow(const g5v::Matrix &in, const g5v::Rect &window)
     {
         int w = (int)window.width;

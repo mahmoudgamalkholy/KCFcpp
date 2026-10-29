@@ -81,7 +81,6 @@ the use of this software, even if advised of the possibility of such damage.
  */
 
 #ifndef _KCFTRACKER_HEADERS
-// #include <opencv2/core/core_c.h>    // Edited
 #include "kcftracker.hpp"
 #include "ffttools.hpp"
 #include "recttools.hpp"

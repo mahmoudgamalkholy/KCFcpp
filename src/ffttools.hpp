@@ -53,7 +53,7 @@ namespace FFTTools
         int C = in.cols;
         g5v::Matrix out = g5v::Matrix::zeros(R, C, 2);
         g5v::Matrix temp = g5v::Matrix::zeros(R, C, 2);
-        float sign = backwards ? 1.0f : -1.0f;
+        float sign = backwards ? 1.0f : -1.0f;      // to insert in the exponetial
         
         for(int r = 0; r < R; r++){
             for(int k = 0; k < C; k++){
@@ -95,13 +95,13 @@ namespace FFTTools
         }
         return out;
     }
-
+    // real extraction
     inline g5v::Matrix real(g5v::Matrix img) {
         g5v::Matrix res(img.rows, img.cols, 1);
         for(int i = 0; i < img.rows * img.cols; i++) res.data[i] = img.data[i * 2];
         return res;
     }
-
+    // instead of cv::mulSpectrums
     inline g5v::Matrix complexMultiplication(g5v::Matrix a, g5v::Matrix b, bool conj_b = false) {
         g5v::Matrix res(a.rows, a.cols, 2);
         for(int i = 0; i < a.rows * a.cols; i++) {
@@ -123,14 +123,14 @@ namespace FFTTools
             float a_im = a.data[i * 2 + 1];
             float b_re = b.data[i * 2];
             float b_im = b.data[i * 2 + 1];
-            float divisor = b_re * b_re + b_im * b_im + 1e-6f; // حماية من القسمة على صفر
+            float divisor = b_re * b_re + b_im * b_im + 1e-6f; // Avoid divid by 0
             
             res.data[i * 2] = (a_re * b_re + a_im * b_im) / divisor;
             res.data[i * 2 + 1] = (a_im * b_re - a_re * b_im) / divisor;
         }
         return res;
     }
-
+    // get the low frequency in the middle
     inline void rearrange(g5v::Matrix &img) {
         int cx = img.cols / 2;
         int cy = img.rows / 2;

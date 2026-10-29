@@ -42,7 +42,7 @@ namespace g5v {
             int total_elements = rows * cols * channels;
             data = new float[total_elements];
             std::memset(data, 0, total_elements * sizeof(float)); 
-        } // <--- القوس ده كان ناقص عندك
+        } 
 
         static Matrix zeros(int r, int c, int ch = 1) {
             return Matrix(r, c, ch);
@@ -104,7 +104,8 @@ namespace g5v {
             for(int i = 0; i < m.rows * m.cols * m.channels; i++) res.data[i] = std::exp(m.data[i]);
             return res;
         }
-
+        
+        // Activated when creation
         Matrix(const Matrix& other) : rows(other.rows), cols(other.cols), channels(other.channels) {
             int total_elements = rows * cols * channels;
             if (total_elements > 0) {
@@ -142,11 +143,12 @@ namespace g5v {
             }
             return *this;
         }
-
+        
+        // edit pixel
         inline float& at(int r, int c, int ch = 0) {
             return data[(r * cols + c) * channels + ch];
         }
-
+        // only read pixel
         inline const float& at(int r, int c, int ch = 0) const {
             return data[(r * cols + c) * channels + ch];
         }
