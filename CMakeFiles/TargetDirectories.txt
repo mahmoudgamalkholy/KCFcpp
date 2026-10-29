@@ -1,5 +1,0 @@
-/home/mahmoud_gamal/projects/KCFcpp/CMakeFiles/nexus_am_archives.dir
-/home/mahmoud_gamal/projects/KCFcpp/CMakeFiles/KCF_gem5.dir
-/home/mahmoud_gamal/projects/KCFcpp/CMakeFiles/run-gem5.dir
-/home/mahmoud_gamal/projects/KCFcpp/CMakeFiles/edit_cache.dir
-/home/mahmoud_gamal/projects/KCFcpp/CMakeFiles/rebuild_cache.dir
