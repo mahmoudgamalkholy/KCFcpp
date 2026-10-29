@@ -343,14 +343,14 @@ g5v::Matrix KCFTracker::createGaussianPeak(int sizey, int sizex)
     int syh = (sizey) / 2;
     int sxh = (sizex) / 2;
 
-    float output_sigma = std::sqrt((float) sizex * sizey) / padding * output_sigma_factor;
+    float output_sigma = sqrtf((float) sizex * sizey) / padding * output_sigma_factor;    
     float mult = -0.5f / (output_sigma * output_sigma);
 
     for (int i = 0; i < sizey; i++) {
         for (int j = 0; j < sizex; j++) {
             int ih = i - syh;
             int jh = j - sxh;
-            res.at(i, j) = std::exp(mult * (float) (ih * ih + jh * jh));
+            res.at(i, j) = expf(mult * (float) (ih * ih + jh * jh));
         }
     }
     return FFTTools::fftd(res);
@@ -442,9 +442,9 @@ void KCFTracker::createHanningMats()
     g5v::Matrix hann2t(size_patch[0], 1, 1); 
 
     for (int i = 0; i < size_patch[1]; i++)
-        hann1t.at(0, i, 0) = 0.5f * (1.0f - std::cos(2.0f * 3.14159265358979323846f * i / (size_patch[1] - 1)));
+        hann1t.at(0, i, 0) = 0.5f * (1.0f - cosf(2.0f * 3.14159265358979323846f * i / (size_patch[1] - 1)));
     for (int i = 0; i < size_patch[0]; i++)
-        hann2t.at(i, 0, 0) = 0.5f * (1.0f - std::cos(2.0f * 3.14159265358979323846f * i / (size_patch[0] - 1)));
+        hann2t.at(i, 0, 0) = 0.5f * (1.0f - cosf(2.0f * 3.14159265358979323846f * i / (size_patch[0] - 1)));
 
     g5v::Matrix hann2d(size_patch[0], size_patch[1], 1);
     for(int r = 0; r < size_patch[0]; r++){

@@ -1,8 +1,13 @@
 #pragma once
-#include <iostream>
-#include <cstring>
-#include <cmath>
-#include <algorithm>
+#include <klib.h>
+
+extern "C" {
+    float sqrtf(float x);
+    float expf(float x);
+    float cosf(float x);
+    float sinf(float x);
+}
+
 
 namespace g5v {
 
@@ -41,7 +46,7 @@ namespace g5v {
         Matrix(int r, int c, int ch = 1) : rows(r), cols(c), channels(ch) {
             int total_elements = rows * cols * channels;
             data = new float[total_elements];
-            std::memset(data, 0, total_elements * sizeof(float)); 
+            memset(data, 0, total_elements * sizeof(float)); 
         } 
 
         static Matrix zeros(int r, int c, int ch = 1) {
@@ -95,13 +100,17 @@ namespace g5v {
 
         static Matrix max(const Matrix& m, float val) {
             Matrix res(m.rows, m.cols, m.channels);
-            for(int i = 0; i < m.rows * m.cols * m.channels; i++) res.data[i] = std::max(m.data[i], val);
+            for(int i = 0; i < m.rows * m.cols * m.channels; i++) {
+                res.data[i] = (m.data[i] > val ? m.data[i] : val);
+            }
             return res;
         }
 
         static Matrix exp(const Matrix& m) {
             Matrix res(m.rows, m.cols, m.channels);
-            for(int i = 0; i < m.rows * m.cols * m.channels; i++) res.data[i] = std::exp(m.data[i]);
+            for(int i = 0; i < m.rows * m.cols * m.channels; i++) {
+                res.data[i] = expf(m.data[i]);
+            }
             return res;
         }
         
@@ -110,7 +119,7 @@ namespace g5v {
             int total_elements = rows * cols * channels;
             if (total_elements > 0) {
                 data = new float[total_elements];
-                std::memcpy(data, other.data, total_elements * sizeof(float));
+                memcpy(data, other.data, total_elements * sizeof(float));
             } else {
                 data = nullptr;
             }
@@ -136,7 +145,7 @@ namespace g5v {
                 int total_elements = rows * cols * channels;
                 if (total_elements > 0) {
                     data = new float[total_elements];
-                    std::memcpy(data, other.data, total_elements * sizeof(float));
+                    memcpy(data, other.data, total_elements * sizeof(float));
                 } else {
                     data = nullptr;
                 }

@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+45279f1390b3a252ab785f52424ede85 /home/mahmoud_gamal/nexus-am/am/build/am-riscv64-xs.a
+27e203b9b1b864deea91ed6a04eee6bb CMakeFiles/nexus_am_archives
+8ba0e6ffdd8ac16d7b106035d2cf9035 CMakeFiles/run-gem5
+e604f838b77ce29d5d721e6a775a79c4 CMakeFiles/run-qemu

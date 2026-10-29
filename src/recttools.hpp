@@ -1,7 +1,6 @@
 #pragma once
 
-#include <cmath>
-#include <algorithm>
+// #include <math.h>
 #include "gem5_vision.hpp"
 
 namespace RectTools
@@ -55,7 +54,7 @@ namespace RectTools
         res.height = y2(original) - y2(limited);
         return res;
     }
-    // instead of copyMakeBorder
+    
     inline g5v::Matrix subwindow(const g5v::Matrix &in, const g5v::Rect &window)
     {
         int w = (int)window.width;
@@ -69,7 +68,6 @@ namespace RectTools
                 int in_r = start_y + r;
                 int in_c = start_x + c;
                 
-                // BORDER_REPLICATE logic
                 if (in_r < 0) in_r = 0;
                 else if (in_r >= in.rows) in_r = in.rows - 1;
                 
@@ -83,6 +81,7 @@ namespace RectTools
         }
         return res;
     }
+    
     inline g5v::Matrix getGrayImage(const g5v::Matrix& img)
     {
         g5v::Matrix gray(img.rows, img.cols, 1);
@@ -112,10 +111,10 @@ namespace RectTools
                 float src_x = c * scale_x;
                 float src_y = r * scale_y;
                 
-                int x1 = std::floor(src_x);
-                int y1 = std::floor(src_y);
-                int x2 = std::min(x1 + 1, src.cols - 1);
-                int y2 = std::min(y1 + 1, src.rows - 1);
+                int x1 = (int)(src_x);
+                int y1 = (int)(src_y);
+                int x2 = (x1 + 1 < src.cols - 1) ? x1 + 1 : src.cols - 1;
+                int y2 = (y1 + 1 < src.rows - 1) ? y1 + 1 : src.rows - 1;
 
                 float dx = src_x - x1;
                 float dy = src_y - y1;

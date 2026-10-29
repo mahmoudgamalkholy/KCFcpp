@@ -34,8 +34,8 @@ the use of this software, even if advised of the possibility of such damage.
 */
 #pragma once
 #include "gem5_vision.hpp"
-#include <cmath>
-#include <algorithm>
+// #include <math.h>
+#include <klib.h>
 
 namespace FFTTools
 {
@@ -60,8 +60,8 @@ namespace FFTTools
                 float sum_re = 0.0f, sum_im = 0.0f;
                 for(int n = 0; n < C; n++){
                     float angle = sign * 2.0f * 3.14159265359f * k * n / C;
-                    float cos_a = std::cos(angle);
-                    float sin_a = std::sin(angle);
+                    float cos_a = cosf(angle);
+                    float sin_a = sinf(angle);
                     float val_re = in.at(r, n, 0);
                     float val_im = in.at(r, n, 1);
                     sum_re += val_re * cos_a - val_im * sin_a;
@@ -77,8 +77,8 @@ namespace FFTTools
                 float sum_re = 0.0f, sum_im = 0.0f;
                 for(int n = 0; n < R; n++){
                     float angle = sign * 2.0f * 3.14159265359f * k * n / R;
-                    float cos_a = std::cos(angle);
-                    float sin_a = std::sin(angle);
+                    float cos_a = cosf(angle);
+                    float sin_a = sinf(angle);
                     float val_re = temp.at(n, c, 0);
                     float val_im = temp.at(n, c, 1);
                     sum_re += val_re * cos_a - val_im * sin_a;
@@ -137,8 +137,13 @@ namespace FFTTools
         for(int r = 0; r < cy; r++){
             for(int c = 0; c < cx; c++){
                 for(int ch = 0; ch < img.channels; ch++) {
-                    std::swap(img.at(r, c, ch), img.at(r + cy, c + cx, ch));
-                    std::swap(img.at(r, c + cx, ch), img.at(r + cy, c, ch));
+                    float tmp1 = img.at(r, c, ch);
+                    img.at(r, c, ch) = img.at(r + cy, c + cx, ch);
+                    img.at(r + cy, c + cx, ch) = tmp1;
+
+                    float tmp2 = img.at(r, c + cx, ch);
+                    img.at(r, c + cx, ch) = img.at(r + cy, c, ch);
+                    img.at(r + cy, c, ch) = tmp2;
                 }
             }
         }

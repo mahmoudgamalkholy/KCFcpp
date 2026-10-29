@@ -1,9 +1,9 @@
-#include <iostream>
+// #include <iostream>
 #include "kcftracker.hpp"
 #include "gem5_vision.hpp" 
 
-using namespace std;
-
+// using namespace std;
+#include <klib.h>
 void draw_rectangle(g5v::Matrix& img, int x, int y, int w, int h, float val) {
     for (int r = y; r < y + h; ++r) {
         for (int c = x; c < x + w; ++c) {
@@ -16,7 +16,13 @@ void draw_rectangle(g5v::Matrix& img, int x, int y, int w, int h, float val) {
     }
 }
 
+inline void riscv_enable_fpu() {
+    uint64_t mstatus_fs = 0x6000; 
+    asm volatile("csrs mstatus, %0" ::"r"(mstatus_fs));
+}
+
 int main(int argc, char* argv[]) {
+    // riscv_enable_fpu();
     bool HOG = true;
     bool FIXEDWINDOW = false;
     bool MULTISCALE = true;
@@ -30,7 +36,8 @@ int main(int argc, char* argv[]) {
     g5v::Rect roi(100, 100, 50, 50);
     tracker.init(roi, frame);
     
-    cout << "Tracker initialized successfully." << endl;
+    // cout << "Tracker initialized successfully." << endl;
+    
 
     int num_frames = 10;
     for (int i = 0; i < num_frames; ++i) {
@@ -40,11 +47,10 @@ int main(int argc, char* argv[]) {
 
         g5v::Rect result = tracker.update(frame);
 
-        cout << "Frame " << i << " | Target Position -> "
-             << "x: " << result.x << ", y: " << result.y 
-             << ", w: " << result.width << ", h: " << result.height << endl;
+        printf("Frame %d | Target Position -> x: %f, y: %f, w: %f, h: %f\n", 
+       i, result.x, result.y, result.width, result.height);
     }
 
-    cout << "Simulation completed without errors!" << endl;
+    printf("Simulation completed without errors!\n");
     return 0;
 }

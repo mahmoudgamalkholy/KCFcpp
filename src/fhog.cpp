@@ -47,13 +47,8 @@
 //#include "_lsvmc_resizeimg.h"
 
 #include "fhog.hpp"
-
-
-#ifdef HAVE_TBB
-#include <tbb/tbb.h>
-#include "tbb/parallel_for.h"
-#include "tbb/blocked_range.h"
-#endif
+#include "gem5_vision.hpp"
+#include <klib.h>
 
 #ifndef max
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
@@ -62,7 +57,6 @@
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
-
 
 /*
 // Getting feature map for the selected subimage
